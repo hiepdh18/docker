@@ -1,0 +1,24 @@
+version: "3.8"
+
+# networks:
+#   bridge:
+#     driver: bridge
+
+services:
+  pg_attic:
+    image: bitnami/postgresql:latest
+    container_name: pg_attic
+    restart: 'no'
+    environment:
+      - POSTGRESQL_USERNAME=dev
+      - POSTGRESQL_PASSWORD=123456aA@
+      - POSTGRESQL_DATABASE=backenddb
+
+    ports:
+      - "5433:5432"
+    # networks:
+    #   bridge:
+    # network_mode: host
+    # command: 'psql "postgresql://dev:123456aA@@localhost/backenddb" < attic.dump'
+    volumes:
+      - ./.docker/attic/attic.dump/:/attic.dump

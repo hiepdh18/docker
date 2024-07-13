@@ -1,0 +1,25 @@
+version: "3.8"
+
+# networks:
+#   bridge:
+#     driver: bridge
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    container_name: postgres
+    restart: 'no'
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=vms_tba,dev:test,dev
+      - POSTGRESQL_USERNAME=dev
+      - POSTGRESQL_PASSWORD=123456aA@
+      - POSTGRESQL_DATABASE=dev
+
+    ports:
+      - "5432:5432"
+    # networks:
+    #   bridge:
+    # network_mode: host
+    volumes:
+      - ./.docker/postgres_db/:/docker-entrypoint-initdb.d/
+      - ./.volumes/db_share:/bitnami/postgresql

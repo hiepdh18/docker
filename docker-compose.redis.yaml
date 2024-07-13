@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  redis:
+    container_name: redis
+    image: 'bitnami/redis:6.2'
+    restart: 'no'
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=123456aA@
+    volumes:
+      - ./.volumes/redis:/bitnami/redis/data

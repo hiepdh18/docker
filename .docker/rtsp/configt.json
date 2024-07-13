@@ -1,0 +1,42 @@
+{
+  "channel_defaults": {},
+  "server": {
+    "debug": true,
+    "http_debug": false,
+    "http_demo": true,
+    "http_dir": "web",
+    "http_login": "demo",
+    "http_password": "demo",
+    "http_port": ":8083",
+    "https": false,
+    "https_auto_tls": false,
+    "https_auto_tls_name": "",
+    "https_cert": "server.crt",
+    "https_key": "server.key",
+    "https_port": ":443",
+    "ice_credential": "MQ@9df12345",
+    "ice_servers": [
+      "stun:192.168.6.123:2414",
+      "turn:192.168.6.123:2414"
+    ],
+    "ice_username": "mq_coturn",
+    "log_level": "debug",
+    "rtsp_port": ":5541",
+    "token": {
+      "backend": "http://127.0.0.1/test.php",
+      "enable": false
+    },
+    "webrtc_port_max": 2416,
+    "webrtc_port_min": 2530
+  },
+  "streams": {
+    "de63851d-5414-4e05-8360-506993a1c2ce": {
+      "channels": {
+        "0": {
+          "url": "rtsp://admin:MQ@123456@192.168.6.205:554/Streaming/Channels/102?transportmode=unicast\\u0026profile=Profile_2"
+        }
+      },
+      "name": "test_camera"
+    }
+  }
+}

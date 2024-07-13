@@ -1,0 +1,68 @@
+version: "3.7"
+
+networks:
+  elk:
+    driver: bridge
+# networks:
+#   elk:
+#     driver: overlay
+
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: .docker/elk/elasticsearch/
+      dockerfile: Dockerfile
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./.docker/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+  logstash:
+    container_name: logstash
+    build:
+      context: .docker/elk/logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./.docker/elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./.docker/elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+  kibana:
+    container_name: kibana
+    build:
+      context: .docker/elk/kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./.docker/elk/kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+# configs:
+#   elastic_config:
+#     file: ./.docker/elk/elasticsearch/config/elasticsearch.yml
+#   logstash_config:
+#     file: ./.docker/elk/logstash/config/logstash.yml
+#   logstash_pipeline:
+#     file: ./.docker/elk/logstash/pipeline/logstash.conf
+#   kibana_config:
+#     file: ./.docker/elk/kibana/config/kibana.yml

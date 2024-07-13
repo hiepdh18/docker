@@ -1,0 +1,43 @@
+version: "3.8"
+
+networks:
+  coturn_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.12.0.0/24"
+          gateway: "10.12.0.1"
+services:
+  coturn_server:
+    container_name: coturn_server
+    build:
+      context: ./.docker/coturn/
+      dockerfile: Dockerfile
+    # network_mode: host
+    volumes:
+      - ./.docker/coturn/turnserver.conf:/etc/turnserver.conf
+    ports:
+      - "3478:3478"
+      - "3478:3478/udp"
+      - "5349:5349"
+      - "5349:5349/udp"
+      - "65000-65535:65000-65535/udp"
+    environment:
+      - TURN_USER_NAME=admin
+      - TURN_USER_PASSWORD=123456aA@
+    restart: always
+    networks:
+      coturn_net:
+        ipv4_address: "10.12.0.100"
+  
+  rtsp:
+    build:
+      context: ./.docker/rtsp/
+      dockerfile: Dockerfile
+    container_name: rtsp
+    restart: 'always'
+    ports:
+      - 8083:8083
+    volumes:
+      - ./.docker/rtsp/config.json:/config/config.json

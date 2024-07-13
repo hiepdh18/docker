@@ -1,0 +1,22 @@
+version: '3.7'
+
+# networks:
+#   nginx-net:
+#     driver: bridge
+
+services:
+  nginx:
+    container_name: nginx
+    image: bitnami/nginx:latest
+    restart: 'no'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./.docker/nginx/conf.d/nginx.conf:/opt/bitnami/nginx/conf/server_blocks/nginx.conf:ro
+      - ./.docker/nginx/conf.d/my_server_block.conf:/bitnami/nginx/conf/server_blocks/my_server_block.conf:ro
+      - ./.docker/nginx/certs:/certs
+      - ./.volumes/nginx/logs:/opt/bitnami/nginx/logs
+    # networks:
+    #   - nginx-net
+    # network_mode: host
